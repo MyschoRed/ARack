@@ -1,0 +1,45 @@
+<div class="">
+
+    <form role="form" method="PUT"
+          hx-put="{% url 'palette_edit' sheet.pk %}"
+          hx-swap="this"
+          hx-target="#formFrame"
+          hx-on="htmx:afterRequest: this.remove()"
+    >
+    <div class="">
+        <h5 class="font-weight-bolder text-center text-secondary text-gradient">
+            Upravit plech</h5>
+    </div>
+        <div class="my-4">
+            <label for="">Paleta</label>
+            {{ form.palette }}
+        </div>
+        <div class="my-4">
+            <label for="">Plech</label>
+            {{ form.sheet }}
+        </div>
+        <div class="my-4">
+            <label for="">Pocet</label>
+            {{ form.quantity }}
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-sm btn-outline-info" type="submit">Ulozit</button>
+            <button class="btn btn-sm btn-outline-secondary" type="button">
+                Zrusit
+            </button>
+        </div>
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong>Chyba!</strong>
+                <ul>
+                    {% for field_errors in form.errors.values %}
+                        {% for error in field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </form>
+</div>

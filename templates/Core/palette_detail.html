@@ -1,0 +1,50 @@
+<h4 class="text-center">Paleta {{ palette.name }}</h4>
+<p>Nalozenych:<b>{% if palette.load_weight == None %}
+    0
+{% else %}
+    {{ palette.load_weight|floatformat:2 }}
+{% endif %}
+</b> kg</p>
+<hr>
+<button class="btn btn-outline-secondary" type="button"
+        hx-get="{% url 'add_sheet_to_palette' palette.pk %}"
+        hx-target="#editFrame"
+        hx-swap="beforeend"
+>Pridat plech
+</button>
+<h6 class="text-center">Zoznam plechov</h6>
+<table class="table table-sm table-hover table-striped">
+    <thead>
+    <tr>
+        <th>Plech</th>
+        <th>ks</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody id="sheetTable">
+    {% for s in sheets %}
+        <tr id="trData">
+            <td>{{ s.sheet.material }}, {{ s.sheet.surface }}, {{ s.sheet.tickness }}mm, {{ s.sheet.size_x }}x{{ s.sheet.size_y }}</td>
+            <td>{{ s.quantity }} ks</td>
+            <td>
+                <button class="btn btn-sm p-0 px-1 btn-danger" type="button"
+                        hx-get="{% url 'palette_edit' s.pk %}"
+                        hx-trigger="click"
+                        hx-target="#editFrame"
+                        hx-swap="afterend"
+                >E
+                </button>
+                <button class="btn btn-sm p-0 px-1 btn-danger" type="button"
+                        hx-post="{% url 'sheet_delete' s.pk %}"
+                        hx-trigger="click"
+                        hx-confirm="Naozaj chces zmazat plech {{ s }}"
+                        hx-on="htmx:afterRequest: removeParentElement()"
+                        hx-target="#formFrame"
+                >X
+                </button>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+

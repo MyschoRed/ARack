@@ -1,0 +1,40 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+
+<div class="">
+    {% include 'components/navbar.html' %}
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.esm.min.js' %}"></script>
+<script src="{% static 'js/htmx.min.js' %}"></script>
+<script>
+    document.body.addEventListener('htmx:configRequest', function(evt) {
+    evt.detail.parameters['auth_token'] = getAuthToken(); // add a new parameter into the mix
+});
+</script>
+<script>
+  function removeParentElement() {
+    var element = document.getElementById("trData");
+    if (element) {
+      element.remove();
+    }
+  }
+</script>
+</body>
+</html>
+
+
