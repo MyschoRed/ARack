@@ -1,9 +1,12 @@
+
+from django.db.models import Subquery, OuterRef, Prefetch,Count
 from django.http import QueryDict
 from django.shortcuts import render, get_object_or_404, redirect
 
 from Core.forms import PaletteForm, SheetToPaletteForm
-from Core.models import Palette, PaletteSheet
+from Core.models import Palette, PaletteSheet, Sheet
 
+from django.contrib.postgres.aggregates import ArrayAgg
 
 # Create your views here.
 def home(request):
@@ -82,3 +85,32 @@ def sheet_delete(request, pk):
     sheets = [sheet for sheet in palette_sheets]
     return render(request, 'Core/palette_detail.html', {'sheets': sheets})
 
+
+def sheet_list(request):
+    sheets = Sheet.objects.prefetch_related('palettesheet_set').all()
+
+    for sheet in sheets:
+        palettes = []
+        quantities = []
+
+        for ps in sheet.palettesheet_set.all():
+            palettes.append(ps.palette.name)
+            quantities.append(ps.quantity)
+
+        sheet.palettes = ', '.join(palettes) if palettes else 'N/A'
+        sheet.quantities = ', '.join(map(str, quantities)) if quantities else 'N/A'
+
+    # sheets = Sheet.objects.annotate(
+    #     palette_name=Subquery(
+    #         PaletteSheet.objects.filter(sheet=OuterRef('pk')).values('palette__name')[:1]
+    #     ),
+    #     quantity_on_palette=Subquery(
+    #         PaletteSheet.objects.filter(sheet=OuterRef('pk')).values('quantity')[:1]
+    #     )
+    # ).values(
+    #     'material', 'surface', 'tickness', 'size_x', 'size_y', 'weight', 'palette_name', 'quantity_on_palette'
+    # )
+    ctx = {
+        'sheets': sheets,
+    }
+    return render(request, 'Core/sheet_list.html', ctx)

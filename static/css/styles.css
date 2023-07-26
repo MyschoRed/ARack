@@ -20,6 +20,7 @@ body {
 
 .palette-item {
     cursor: pointer;
+    /*margin-bottom: 5px;*/
 }
 
 .palette-item:hover {

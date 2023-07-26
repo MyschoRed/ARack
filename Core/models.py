@@ -9,13 +9,22 @@ class Sheet(models.Model):
     size_x = models.IntegerField()
     size_y = models.IntegerField()
     weight = models.FloatField(null=True, blank=True, )
+    note = models.CharField(max_length=128, null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        self.weight = ((self.size_x * self.size_y) / 1000000) * 8 * self.tickness
+        self.weight = round(((self.size_x * self.size_y) / 1000000) * 8 * self.tickness, 3)
         super().save(*args, **kwargs)
 
+    @property
+    def palette_name(self):
+        try:
+            palette_sheet = PaletteSheet.objects.get(sheet=self)
+            return palette_sheet.palette.name
+        except PaletteSheet.DoesNotExist:
+            return "N/A"
+
     def __str__(self):
-        return f"{self.material}, {self.surface}, {self.tickness}mm, {self.size_x}, {self.size_y}, {self.weight}kg"
+        return f"{self.material}, {self.surface}, {self.tickness}x{self.size_x}x{self.size_y}"
 
     class Meta:
         verbose_name = "Plech"
@@ -25,11 +34,13 @@ class Sheet(models.Model):
 class Palette(models.Model):
     name = models.CharField(max_length=4)
     capacity = models.FloatField()
-    sheets = models.ManyToManyField(Sheet,blank=True, through='PaletteSheet', related_name='palette_sheet')
+    sheets = models.ManyToManyField(Sheet, blank=True, through='PaletteSheet', related_name='palette_sheet')
     load_weight = models.FloatField(null=True, blank=True)
 
     def calculate_load_weight(self):
-        load_weight = self.palettesheet_set.aggregate(total_weight=models.Sum(models.F('sheet__weight') * models.F('quantity')))['total_weight']
+        load_weight = \
+        self.palettesheet_set.aggregate(total_weight=models.Sum(models.F('sheet__weight') * models.F('quantity')))[
+            'total_weight']
         self.load_weight = load_weight if load_weight else 0
 
     def save(self, *args, **kwargs):
@@ -51,7 +62,7 @@ class PaletteSheet(models.Model):
     palette = models.ForeignKey(Palette, on_delete=models.CASCADE)
     sheet = models.ForeignKey(Sheet, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-
+    note = models.CharField(max_length=128, null=True, blank=True)
 
     def __str__(self):
         return f"{self.sheet.material} - {self.quantity}"

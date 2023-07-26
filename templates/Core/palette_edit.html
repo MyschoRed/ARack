@@ -1,15 +1,14 @@
 <div class="">
-
     <form role="form" method="PUT"
           hx-put="{% url 'palette_edit' sheet.pk %}"
           hx-swap="this"
           hx-target="#formFrame"
           hx-on="htmx:afterRequest: this.remove()"
-    >
-    <div class="">
-        <h5 class="font-weight-bolder text-center text-secondary text-gradient">
-            Upravit plech</h5>
-    </div>
+     class="container">
+        <div class="">
+            <h5 class="text-center">
+                Upravit plech</h5>
+        </div>
         <div class="my-4">
             <label for="">Paleta</label>
             {{ form.palette }}
@@ -22,12 +21,14 @@
             <label for="">Pocet</label>
             {{ form.quantity }}
         </div>
+        <div class="my-4">
+            <label for="">Poznamka</label>
+            {{ form.note }}
+        </div>
 
-        <div class="text-center">
+        <div class="text-center mb-2">
             <button class="btn btn-sm btn-outline-info" type="submit">Ulozit</button>
-            <button class="btn btn-sm btn-outline-secondary" type="button">
-                Zrusit
-            </button>
+            <button class="btn btn-sm btn-outline-secondary" type="button">Zrusit</button>
         </div>
         {% if form.errors %}
             <div class="alert alert-danger">

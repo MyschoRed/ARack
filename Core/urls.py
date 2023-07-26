@@ -9,4 +9,7 @@ urlpatterns = [
     path('palettes-list/', views.palette_list, name='paletts_list'),
     path('palette/sheet/add/<int:pk>/', views.add_sheet_to_palette, name='add_sheet_to_palette'),
     path('palette/sheet/delete/<int:pk>/', views.sheet_delete, name='sheet_delete'),
+
+    path('sheet-list/', views.sheet_list, name='sheet_list'),
+
 ]

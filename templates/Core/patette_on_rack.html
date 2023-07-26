@@ -1,9 +1,10 @@
-
-<div class="border mx-auto my-1 rounded-2 palette-item"
-     style="background-color: {{ p.palette_color }}; color: white;"
+<div class="border rounded-0 palette-item"
+     style="background-color: {{ p.palette_color }}; color: white; margin-bottom: 2px;"
      hx-get="{% url 'palette_detail' p.palette.pk %}"
      hx-trigger="click"
-     hx-target="#formFrame"
->
-    {{ p.palette.name }}
+     hx-target="#formFrame">
+    <div class="d-flex justify-content-between">
+        <span class="ms-5">{{ p.palette.name }}</span>
+        <span class="me-5">{{ p.palette.load_weight|floatformat:2 }} kg</span>
+    </div>
 </div>
