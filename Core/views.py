@@ -1,5 +1,5 @@
-
-from django.db.models import Subquery, OuterRef, Prefetch,Count
+from django.contrib.auth.decorators import login_required
+from django.db.models import Subquery, OuterRef, Prefetch, Count
 from django.http import QueryDict
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -8,11 +8,20 @@ from Core.models import Palette, PaletteSheet, Sheet
 
 from django.contrib.postgres.aggregates import ArrayAgg
 
-# Create your views here.
-def home(request):
-    return render(request, 'Core/home.html')
+
+def welcome(request):
+    return render(request, 'Core/welcome.html')
 
 
+def stock(request):
+    return render(request, 'Core/stock.html')
+
+@login_required
+def a_rack(request):
+    return render(request, 'Core/a_rack.html')
+
+
+@login_required
 def palette_list(request):
     paletts = Palette.objects.all().order_by('-name')
     palette_color = ''
@@ -21,9 +30,9 @@ def palette_list(request):
         palette.update_load_weight()
         if palette.load_weight == 0 or palette.load_weight is None:
             palette_color = 'blue'
-        elif palette.load_weight > 0 and palette.load_weight <= 1500:
+        elif 0 < palette.load_weight <= 1500:
             palette_color = 'green'
-        elif palette.load_weight > 1500 and palette.load_weight <= palette.capacity:
+        elif 1500 < palette.load_weight <= palette.capacity:
             palette_color = 'darkorange'
         elif palette.load_weight > palette.capacity:
             palette_color = 'red'
@@ -34,6 +43,7 @@ def palette_list(request):
     return render(request, 'Core/palette_list.html', {'pallets': ctx})
 
 
+@login_required
 def palette_detail(request, pk):
     palette = Palette.objects.get(pk=pk)
     palette_sheets = palette.palettesheet_set.all()  # Získanie spojovacej tabuľky pre priradené plechy
@@ -48,6 +58,7 @@ def palette_detail(request, pk):
     return render(request, 'Core/palette_detail.html', ctx)
 
 
+@login_required
 def add_sheet_to_palette(request, pk):
     if request.method == 'POST':
         form = SheetToPaletteForm(request.POST or None)
@@ -63,6 +74,7 @@ def add_sheet_to_palette(request, pk):
     return render(request, 'Core/add_sheet_to_palette.html', {'form': form, 'palette_id': pk})
 
 
+@login_required
 def palette_edit(request, pk):
     sheet = PaletteSheet.objects.get(pk=pk)
     form = SheetToPaletteForm(instance=sheet)
@@ -77,6 +89,8 @@ def palette_edit(request, pk):
             form.save()
             return render(request, 'Core/palette_detail.html', ctx)
 
+
+@login_required
 def sheet_delete(request, pk):
     sheet = PaletteSheet.objects.get(pk=pk)
     sheet.delete()
@@ -86,6 +100,7 @@ def sheet_delete(request, pk):
     return render(request, 'Core/palette_detail.html', {'sheets': sheets})
 
 
+@login_required
 def sheet_list(request):
     sheets = Sheet.objects.prefetch_related('palettesheet_set').all()
 

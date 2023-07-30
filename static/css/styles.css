@@ -1,5 +1,19 @@
+body {
+    font-size: small;
+    background-color: #2f80f8;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+}
+
 .full-screen-card {
     height: 85vh;
+}
+
+.form-card {
+    height: 50vh;
+}
+
+.edit-card {
+    height: 32vh;
 }
 
 .card-scroll {
@@ -10,12 +24,9 @@ label {
     color: gray;
 }
 
-body {
-    font-family: "Helvetica Neue", Helvetica, sans-serif;
-}
-
 .btn {
-    border-radius: 0;
+    /*border-radius: 0;*/
+    margin: 5px;
 }
 
 .palette-item {
@@ -28,8 +39,8 @@ body {
 }
 
 tr.htmx-swap td {
-  opacity: 0;
-  transition: opacity 1s ease-out;
+    opacity: 0;
+    transition: opacity 1s ease-out;
 }
 
 

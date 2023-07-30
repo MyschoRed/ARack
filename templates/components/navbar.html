@@ -1,58 +1,42 @@
-<nav class="p-0 navbar navbar-expand-lg bg-body-secondary">
+<nav class="p-0 shadow navbar navbar-expand-sm bg-light bg-opacity-50">
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <button class="nav-link btn btn-outline-secondary"
+                    <a class="btn btn-sm btn-outline-primary"
+                       href="{% url 'welcome' %}"
+                    >Domov
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-sm btn-outline-primary"
                             type="button"
                             hx-get="{% url 'paletts_list' %}"
                             hx-target="#dataFrame"
                             hx-swap="this"
+                            hx-on="click: handleClearEditFrame()"
                     >A-Rack
                     </button>
                 </li>
-{#                <li class="nav-item">#}
-{#                    <button class="nav-link btn btn-outline-secondary"#}
-{#                            type="button"#}
-{#                            hx-get="{% url 'paletts_list' %}"#}
-{#                            hx-target="#dataFrame"#}
-{#                            hx-swap="this"#}
-{#                    >Zoznam paliet#}
-{#                    </button>#}
-{#                </li>#}
                 <li class="nav-item">
-                    <button class="nav-link btn btn-outline-secondary"
+                    <button class="btn btn-sm btn-outline-primary"
                             type="button"
                             hx-get="{% url 'sheet_list' %}"
                             hx-target="#dataFrame"
                             hx-swap="this"
+                            hx-on="click: handleClearEditFrame()"
                     >Zoznam tabul
                     </button>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link bg-danger btn btn-outline-secondary" href="admin/">Admin</a>
+                    <a class="btn btn-sm btn-outline-danger" href="admin/">Admin</a>
                 </li>
-                {#                <li class="nav-item">#}
-                {#                    <a class="nav-link btn btn-outline-secondary" href="{% url 'parts' %}">Diely</a>#}
-                {#                </li>#}
-                {#                <li class="nav-item">#}
-                {#                    <a class="nav-link btn btn-outline-secondary" href="{% url 'customers' %}">Zakaznici</a>#}
-                {#                </li>#}
-                {#                <li class="nav-item dropdown">#}
-                {#                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"#}
-                {#                       aria-expanded="false">#}
-                {#                        Dropdown#}
-                {#                    </a>#}
-                {#                    <ul class="dropdown-menu">#}
-                {#                        <li><a class="dropdown-item" href="#">Action</a></li>#}
-                {#                        <li><a class="dropdown-item" href="#">Another action</a></li>#}
-                {#                        <li>#}
-                {#                            <hr class="dropdown-divider">#}
-                {#                        </li>#}
-                {#                        <li><a class="dropdown-item" href="#">Something else here</a></li>#}
-                {#                    </ul>#}
-                {#                </li>#}
             </ul>
+            <div class="d-flex">
+                <div class="me-3">{{ user.first_name }} {{ user.last_name }}</div>
+
+                <a href="{% url 'logout' %}"><i class="fa-solid fa-power-off"></i></a>
+            </div>
         </div>
     </div>
 </nav>

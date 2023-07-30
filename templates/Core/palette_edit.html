@@ -4,31 +4,33 @@
           hx-swap="this"
           hx-target="#formFrame"
           hx-on="htmx:afterRequest: this.remove()"
-     class="container">
+          class="container">
         <div class="">
-            <h5 class="text-center">
-                Upravit plech</h5>
+            <h6 class="fw-bold">Upravit plech</h6>
+            <hr>
         </div>
-        <div class="my-4">
-            <label for="">Paleta</label>
+        <div class="my-2">
+            <label class="me-5 text-black" for="">Paleta</label>
             {{ form.palette }}
         </div>
-        <div class="my-4">
-            <label for="">Plech</label>
+        <div class="my-2">
+            <label class="me-5 text-black" for="">Plech</label>
             {{ form.sheet }}
         </div>
-        <div class="my-4">
-            <label for="">Pocet</label>
+        <div class="my-2">
+            <label class="me-5 text-black" for="">Pocet</label>
             {{ form.quantity }}
         </div>
-        <div class="my-4">
-            <label for="">Poznamka</label>
+        <div class="my-2">
+            <label class="me-3 text-black" for="">Poznamka</label>
             {{ form.note }}
         </div>
 
         <div class="text-center mb-2">
-            <button class="btn btn-sm btn-outline-info" type="submit">Ulozit</button>
-            <button class="btn btn-sm btn-outline-secondary" type="button">Zrusit</button>
+            <button class="btn btn-sm btn-info" type="submit">Ulozit</button>
+            <button class="btn btn-sm btn-secondary" type="button"
+            hx-on="click: handleCancelClick()"
+            >Zrusit</button>
         </div>
         {% if form.errors %}
             <div class="alert alert-danger">

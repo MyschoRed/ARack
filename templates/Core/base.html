@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html lang="en">
+<html lang="sk">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,13 +13,21 @@
           integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
-<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-
-<div class="">
-    {% include 'components/navbar.html' %}
-    {% block content %}
-    {% endblock %}
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+      class="">
+<div>
+    {% block login %}
+    {% endblock login %}
 </div>
+{% if user.is_authenticated %}
+    <div class="">
+            {% include 'components/navbar.html' %}
+            {% block content %}
+            {% endblock content %}
+            {% block stock %}
+            {% endblock stock %}
+    </div>
+{% endif %}
 </div>
 
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
@@ -41,6 +49,25 @@
         if (element) {
             element.remove();
         }
+    }
+</script>
+<script>
+    var editFrame = document.querySelector("#editFrame");
+    var formFrame = document.querySelector("#formFrame");
+
+    function clearElementContent(element) {
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);
+        }
+    }
+
+    function handleCancelClick() {
+        clearElementContent(editFrame);
+    }
+
+    function handleClearEditFrame() {
+        clearElementContent(formFrame);
+        clearElementContent(editFrame)
     }
 </script>
 </body>

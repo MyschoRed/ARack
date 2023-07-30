@@ -1,5 +1,5 @@
 <div class="container-fluid mt-3">
-    <table id="example" class="table table-sm" style="cursor: pointer">
+    <table id="example" class="table table-sm">
         <thead>
         <tr>
             <th scope="col">Material</th>
@@ -17,9 +17,14 @@
                     <td>{{ sheet.material }}, {{ sheet.surface }}, {{ sheet.tickness }}x{{ sheet.size_x }}x{{ sheet.size_y }}</td>
                     <td>{{ palette_sheet.palette.name }}</td>
                     <td>{{ palette_sheet.quantity }} ks</td>
-                    <td>{{ palette_sheet.note }}</td>
                     <td>
-                        <button class="btn btn-sm btn-info" type="button"
+                        {% if palette_sheet.note != None %}
+                            {{ palette_sheet.note }}
+                        {% endif %}
+                    </td>
+                    <td class="m-0 p-1">
+                        <div class="d-flex justify-content-end">
+                        <button class="btn btn-sm btn-info me-1" type="button"
                                 hx-get="{% url 'palette_edit' palette_sheet.pk %}"
                                 hx-trigger="click"
                                 hx-target="#editFrame"
@@ -34,6 +39,7 @@
                                 hx-target="#formFrame"
                         ><i class="fa-sharp fa-solid fa-trash"></i>
                         </button>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}

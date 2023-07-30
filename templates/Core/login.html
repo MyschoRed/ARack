@@ -1,0 +1,31 @@
+{% extends 'Core/base.html' %}
+
+{% block login %}
+    <div class="vh-100 d-flex align-items-center">
+        <div class="mx-auto w-25">
+            <div class="card shadow">
+                <div class="card-title m-4">
+                    <h4 class="text-center">Login</h4>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="card-body text-center">
+                        <div class="mb-4">
+                            <label for="">Uzivatelske meno</label>
+                            <br>
+                            {{ form.username }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="">Heslo</label>
+                            <br>
+                            {{ form.password }}
+                        </div>
+                        <div class="text-center">
+                        <button class="btn btn-primary" type="submit">Login</button>
+                            </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

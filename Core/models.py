@@ -2,6 +2,8 @@ from django.db import models
 
 
 # Create your models here.
+
+
 class Sheet(models.Model):
     material = models.CharField(max_length=64)
     surface = models.CharField(max_length=32)
@@ -39,8 +41,8 @@ class Palette(models.Model):
 
     def calculate_load_weight(self):
         load_weight = \
-        self.palettesheet_set.aggregate(total_weight=models.Sum(models.F('sheet__weight') * models.F('quantity')))[
-            'total_weight']
+            self.palettesheet_set.aggregate(total_weight=models.Sum(models.F('sheet__weight') * models.F('quantity')))[
+                'total_weight']
         self.load_weight = load_weight if load_weight else 0
 
     def save(self, *args, **kwargs):

@@ -1,8 +1,9 @@
-<div class="border rounded-0 palette-item"
-     style="background-color: {{ p.palette_color }}; color: white; margin-bottom: 2px;"
+<div class="rounded palette-item"
+     style="background-color: {{ p.palette_color }}; color: white; margin-bottom: 2px; padding: 1px"
      hx-get="{% url 'palette_detail' p.palette.pk %}"
      hx-trigger="click"
-     hx-target="#formFrame">
+     hx-target="#formFrame"
+     hx-on="click: handleCancelClick()">
     <div class="d-flex justify-content-between">
         <span class="ms-5">{{ p.palette.name }}</span>
         <span class="me-5">{{ p.palette.load_weight|floatformat:2 }} kg</span>

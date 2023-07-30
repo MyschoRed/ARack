@@ -1,35 +1,34 @@
 <div class="">
 
     <form role="form" method="POST"
+          class="container"
           hx-post="{% url 'add_sheet_to_palette' palette_id %}"
           hx-swap="this"
           hx-target="#formFrame"
-                    hx-on="htmx:afterRequest: this.remove()"
-
-            {#          hx-on="htmx:afterRequest: location.reload()"#}
-    >
+          hx-on="htmx:afterRequest: this.remove()"
+            {#          hx-on="htmx:afterRequest: location.reload()"#}>
         <div class="">
-        <h5 class="font-weight-bolder text-center text-secondary text-gradient">
-            Pridat plech</h5>
-    </div>
+            <h6 class="fw-bold">Pridat plech</h6>
+            <hr>
+        </div>
         <input type="hidden" name="palette" value="{{ palette_id }}">
         {#    {{ form }}#}
-        <div class="my-4">
-            <label for="">Plech</label>
+        <div class="my-2">
+            <label class="me-5 text-black" for="">Plech</label>
             {{ form.sheet }}
         </div>
-        <div class="my-4">
-            <label for="">Pocet</label>
+        <div class="my-2">
+            <label class="me-5 text-black" for="">Pocet</label>
             {{ form.quantity }}
         </div>
-            <div class="my-4">
-            <label for="">Poznamka</label>
+        <div class="my-2">
+            <label class="me-3 text-black" for="">Poznamka</label>
             {{ form.note }}
         </div>
 
-        <div class="my-4 text-center">
-            <button class="btn btn-sm btn-outline-info" type="submit">Ulozit</button>
-            <button class="btn btn-sm btn-outline-secondary" hx-on="click: location.reload()" type="button">Zrusit
+        <div class="mb-2 text-center">
+            <button class="btn btn-sm btn-info" type="submit">Ulozit</button>
+            <button class="btn btn-sm btn-secondary" hx-on="click: handleCancelClick()" type="button">Zrusit
             </button>
         </div>
         {% if form.errors %}
