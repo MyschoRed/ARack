@@ -1,20 +1,19 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Subquery, OuterRef, Prefetch, Count
 from django.http import QueryDict
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
 
-from Core.forms import PaletteForm, SheetToPaletteForm
+from Core.forms import SheetToPaletteForm
 from Core.models import Palette, PaletteSheet, Sheet
-
-from django.contrib.postgres.aggregates import ArrayAgg
 
 
 def welcome(request):
     return render(request, 'Core/welcome.html')
 
 
+@login_required
 def stock(request):
     return render(request, 'Core/stock.html')
+
 
 @login_required
 def a_rack(request):

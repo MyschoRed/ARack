@@ -1,9 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
-
-
 class Sheet(models.Model):
     material = models.CharField(max_length=64)
     surface = models.CharField(max_length=32)
@@ -26,7 +23,7 @@ class Sheet(models.Model):
             return "N/A"
 
     def __str__(self):
-        return f"{self.material}, {self.surface}, {self.tickness}x{self.size_x}x{self.size_y}"
+        return f"000{self.pk}, {self.material}, {self.surface}, {self.tickness}x{self.size_x}x{self.size_y}"
 
     class Meta:
         verbose_name = "Plech"
