@@ -4,10 +4,10 @@ from Core.models import Palette, PaletteSheet
 
 
 class PaletteForm(forms.ModelForm):
-
     class Meta:
         model = Palette
         fields = '__all__'
+
 
 class SheetToPaletteForm(forms.ModelForm):
     class Meta:

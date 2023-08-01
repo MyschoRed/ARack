@@ -6,6 +6,21 @@ from Core.forms import SheetToPaletteForm
 from Core.models import Palette, PaletteSheet, Sheet
 
 
+# na vytvorenie paliet
+def palette_generator():
+    for i in range(0, 24):
+        if i < 9:
+            Palette.objects.create(name=f'A0{i + 1}', capacity=2000).save()
+        else:
+            Palette.objects.create(name=f'A{i + 1}', capacity=2000).save()
+
+    for i in range(0, 24):
+        if i < 9:
+            Palette.objects.create(name=f'B0{i + 1}', capacity=2000).save()
+        else:
+            Palette.objects.create(name=f'B{i + 1}', capacity=2000).save()
+
+
 def welcome(request):
     return render(request, 'Core/welcome.html')
 
@@ -17,6 +32,7 @@ def stock(request):
 
 @login_required
 def a_rack(request):
+    # palette_generator()
     return render(request, 'Core/a_rack.html')
 
 
@@ -63,9 +79,9 @@ def add_sheet_to_palette(request, pk):
         form = SheetToPaletteForm(request.POST or None)
         if form.is_valid():
             palette = Palette.objects.get(pk=pk)
-            print(palette)
             sheet = form.save(commit=False)
             sheet.palette = palette
+            sheet.created_by = request.user
             sheet.save()
             return redirect('palette_detail', pk=palette.pk)
     else:
@@ -84,7 +100,9 @@ def palette_edit(request, pk):
     if request.method == 'PUT':
         data = QueryDict(request.body).dict()
         form = SheetToPaletteForm(data, instance=sheet)
+
         if form.is_valid():
+            form.instance.created_by = request.user
             form.save()
             return render(request, 'Core/palette_detail.html', ctx)
 

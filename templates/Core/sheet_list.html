@@ -6,7 +6,9 @@
             <th scope="col">Paleta</th>
             <th scope="col">Ks na palete</th>
             <th scope="col">Poznamka</th>
-            <th scope="col">Akcia</th>
+            <th scope="col">Nalozil</th>
+            <th scope="col">Nalozene</th>
+            <th scope="col"></th>
 
         </tr>
         </thead>
@@ -14,7 +16,7 @@
         {% for sheet in sheets %}
             {% for palette_sheet in sheet.palettesheet_set.all %}
                 <tr>
-                    <td>{{ sheet.material }}, {{ sheet.surface }}, {{ sheet.tickness }}x{{ sheet.size_x }}x{{ sheet.size_y }}</td>
+                    <td>{{ sheet.material.material_name }}, {{ sheet.surface.surface_name }}, {{ sheet.thickness }}x{{ sheet.size_x }}x{{ sheet.size_y }}</td>
                     <td>{{ palette_sheet.palette.name }}</td>
                     <td>{{ palette_sheet.quantity }} ks</td>
                     <td>
@@ -22,6 +24,8 @@
                             {{ palette_sheet.note }}
                         {% endif %}
                     </td>
+                    <td>{{ palette_sheet.created_by }}</td>
+                    <td>{{ palette_sheet.created_date }}</td>
                     <td class="m-0 p-1">
                         <div class="d-flex justify-content-end">
                         <button class="btn btn-sm btn-info me-1" type="button"
