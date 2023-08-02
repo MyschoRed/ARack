@@ -28,9 +28,11 @@
                     >Zoznam tabul
                     </button>
                 </li>
+                {% if user.is_superuser %}
                 <li class="nav-item">
                     <a class="btn btn-sm btn-outline-danger" href="/admin/">Admin</a>
                 </li>
+                {% endif %}
             </ul>
             <div class="d-flex">
                 <div class="me-3">{{ user.first_name }} {{ user.last_name }}</div>

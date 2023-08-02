@@ -5,10 +5,11 @@
         <div class="mx-auto w-25">
             <div class="card shadow">
                 <div class="card-title m-4">
-                    <h4 class="text-center">Prihlasit</h4>
+                    <h4 class="text-center">Vytvorenie uctu</h4>
                 </div>
                 <form method="post">
                     {% csrf_token %}
+                    {#                    {{ form.as_p }}#}
                     <div class="card-body text-center">
                         <div class="mb-4">
                             <label for="">Uzivatelske meno</label>
@@ -16,22 +17,32 @@
                             {{ form.username }}
                         </div>
                         <div class="mb-4">
+                            <label for="">Krstne meno</label>
+                            <br>
+                            {{ form.first_name }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="">Priezvisko</label>
+                            <br>
+                            {{ form.last_name }}
+                        </div>
+                        <div class="mb-4">
                             <label for="">Heslo</label>
                             <br>
-                            {{ form.password }}
+                            {{ form.password1 }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="">Znovu zadaj heslo</label>
+                            <br>
+                            {{ form.password2 }}
                         </div>
                         <div class="text-center">
-                            <button class="btn btn-primary" type="submit">Prihlasit</button>
+                            <button class="btn btn-primary" type="submit">Registrovat</button>
                         </div>
                     </div>
-                    {% if form.errors %}
-                        <div class="alert alert-danger mx-2">
-                            {{ form.non_field_errors }}
-                        </div>
-                    {% endif %}
                 </form>
                 <div class="mb-2 text-center">
-                    <a href="{% url 'registration' %}">Vytvorit ucet</a>
+                    <a href="{% url 'login' %}">Mam ucet</a>
                 </div>
             </div>
         </div>
