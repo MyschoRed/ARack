@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from Core.models import Palette, PaletteSheet
+from Core.models import Palette, PaletteSheet, Sheet
 
 
 class SignUpForm(UserCreationForm):
@@ -29,4 +29,10 @@ class PaletteForm(forms.ModelForm):
 class SheetToPaletteForm(forms.ModelForm):
     class Meta:
         model = PaletteSheet
+        fields = '__all__'
+
+
+class SheetEditForm(forms.ModelForm):
+    class Meta:
+        model = Sheet
         fields = '__all__'

@@ -10,7 +10,7 @@ class RawMaterial(models.Model):
     material_name = models.CharField(max_length=32)
 
     def __str__(self):
-        return f"ID {self.pk}: {self.material_name}"
+        return f"{self.material_name}"
 
     class Meta:
         verbose_name = "Akost materialu"
@@ -21,7 +21,7 @@ class MaterialSurface(models.Model):
     surface_name = models.CharField(max_length=32)
 
     def __str__(self):
-        return f"ID {self.pk}: {self.surface_name}"
+        return f"{self.surface_name}"
 
     class Meta:
         verbose_name = "Povrch materialu"
@@ -50,7 +50,7 @@ class Sheet(models.Model):
             return "N/A"
 
     def __str__(self):
-        return f"000{self.pk}, {self.material.material_name}, {self.surface.surface_name}, {self.thickness}x{self.size_x}x{self.size_y}"
+        return f"{self.material.material_name}, {self.surface.surface_name}, {self.thickness}x{self.size_x}x{self.size_y}"
 
     class Meta:
         verbose_name = "Plech"

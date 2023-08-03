@@ -21,7 +21,8 @@
             <thead>
             <tr>
                 <th>Plech</th>
-                <th>ks</th>
+                <th>Ks</th>
+                <th>Poznamka</th>
                 <th></th>
             </tr>
             </thead>
@@ -30,6 +31,12 @@
                 <tr id="trData">
                     <td>{{ s.sheet.material }}, {{ s.sheet.surface }}, {{ s.sheet.tickness }}x{{ s.sheet.size_x }}x{{ s.sheet.size_y }}</td>
                     <td>{{ s.quantity }} ks</td>
+                    <td>
+                        {% if s.note %}
+                            {{ s.note }}
+                        {% else %}
+                        {% endif %}
+                    </td>
                     <td class="m-0 p-0">
                         <div class="d-flex justify-content-end">
                         <button class="btn btn-sm btn-info me-1" type="button"

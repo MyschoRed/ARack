@@ -3,8 +3,25 @@ from django.contrib.auth.decorators import login_required
 from django.http import QueryDict
 from django.shortcuts import render, redirect
 
-from Core.forms import SheetToPaletteForm, SignUpForm
+from Core.forms import SheetToPaletteForm, SignUpForm, SheetEditForm
 from Core.models import Palette, PaletteSheet, Sheet
+
+
+def palette_generator():
+    """
+    Na vytvorenie paliet
+    """
+    for i in range(0, 24):
+        if i < 9:
+            Palette.objects.create(name=f'A0{i + 1}', capacity=2000).save()
+        else:
+            Palette.objects.create(name=f'A{i + 1}', capacity=2000).save()
+
+    for i in range(0, 24):
+        if i < 9:
+            Palette.objects.create(name=f'B0{i + 1}', capacity=2000).save()
+        else:
+            Palette.objects.create(name=f'B{i + 1}', capacity=2000).save()
 
 
 def registration(request):
@@ -21,20 +38,6 @@ def registration(request):
         form = SignUpForm()
     return render(request, 'Core/registration.html', {'form': form})
 
-# na vytvorenie paliet
-def palette_generator():
-    for i in range(0, 24):
-        if i < 9:
-            Palette.objects.create(name=f'A0{i + 1}', capacity=2000).save()
-        else:
-            Palette.objects.create(name=f'A{i + 1}', capacity=2000).save()
-
-    for i in range(0, 24):
-        if i < 9:
-            Palette.objects.create(name=f'B0{i + 1}', capacity=2000).save()
-        else:
-            Palette.objects.create(name=f'B{i + 1}', capacity=2000).save()
-
 
 def welcome(request):
     return render(request, 'Core/welcome.html')
@@ -49,6 +52,63 @@ def stock(request):
 def a_rack(request):
     # palette_generator()
     return render(request, 'Core/a_rack.html')
+
+
+def sheet_list(request):
+    all_sheets = Sheet.objects.all()
+
+    ctx = {'all_sheets': all_sheets}
+    return render(request, 'Core/sheet_list.html', ctx)
+
+
+@login_required
+def sheet_detail(request, pk):
+    sheet = Sheet.objects.get(pk=pk)
+    ctx = {
+        'sheet': sheet,
+    }
+    return render(request, 'Core/sheet_detail.html', ctx)
+
+
+def sheet_edit(request, pk):
+    sheet = Sheet.objects.get(pk=pk)
+    form = SheetEditForm(instance=sheet)
+    ctx = {'sheet': sheet,
+           'form': form}
+    if request.method == 'GET':
+        return render(request, 'Core/sheet_edit.html', ctx)
+    if request.method == 'PUT':
+        data = QueryDict(request.body).dict()
+        form = SheetEditForm(data, instance=sheet)
+
+        if form.is_valid():
+            form.instance.created_by = request.user
+            form.save()
+            return render(request, 'Core/sheet_list.html', ctx)
+
+
+def sheet_add(request):
+    if request.method == 'POST':
+        form = SheetEditForm(request.POST or None)
+        if form.is_valid():
+            sheet = form.save()
+            sheet.save()
+            return redirect('sheet_list')
+    else:
+        form = SheetEditForm()
+
+    ctx = {'form': form}
+    return render(request, 'Core/sheet_add.html', ctx)
+
+
+@login_required
+def sheet_delete(request, pk):
+    sheet = Sheet.objects.get(pk=pk)
+    sheet.delete()
+    palette = Palette.objects.get(pk=pk)
+    palette_sheets = palette.palettesheet_set.all()  # Získanie spojovacej tabuľky pre priradené plechy
+    sheets = [sheet for sheet in palette_sheets]
+    return render(request, 'Core/sheet_detail.html', {'sheets': sheets})
 
 
 @login_required
@@ -123,7 +183,7 @@ def palette_edit(request, pk):
 
 
 @login_required
-def sheet_delete(request, pk):
+def sheet_on_palette_delete(request, pk):
     sheet = PaletteSheet.objects.get(pk=pk)
     sheet.delete()
     palette = Palette.objects.get(pk=pk)
@@ -133,7 +193,7 @@ def sheet_delete(request, pk):
 
 
 @login_required
-def sheet_list(request):
+def stock_status(request):
     sheets = Sheet.objects.prefetch_related('palettesheet_set').all()
 
     for sheet in sheets:
@@ -160,4 +220,4 @@ def sheet_list(request):
     ctx = {
         'sheets': sheets,
     }
-    return render(request, 'Core/sheet_list.html', ctx)
+    return render(request, 'Core/stock_status.html', ctx)

@@ -1,0 +1,77 @@
+<div class="">
+
+    <form role="form" method="POST"
+          class="container"
+          hx-post="{% url 'sheet_add' %}"
+          hx-swap="this"
+          hx-target="#invisibleFrame"
+{#          hx-on="htmx:afterRequest: this.remove()"#}
+                      hx-on="htmx:afterRequest: location.reload()">
+        <div class="">
+            <h6 class="fw-bold">Vytvorit plech</h6>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Material</label>
+                    <h6 class="fw-bold">{{ form.material }}</h6>
+                </div>
+            </div>
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Povrch</label>
+                    <h6 class="fw-bold">{{ form.surface }}</h6>
+                </div>
+            </div>
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Hrubka</label>
+                    <h6 class="fw-bold">{{ form.thickness }}</h6>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Rozmer X</label>
+                    <h6 class="fw-bold">{{ form.size_x }}</h6>
+                </div>
+            </div>
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Rozmer Y</label>
+                    <h6 class="fw-bold">{{ form.size_y }}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Poznamka</label>
+                    <h6 class="fw-bold">{{ form.note }}</h6>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mb-2 text-center">
+            <button class="btn btn-sm btn-info" type="submit">Ulozit</button>
+            <button class="btn btn-sm btn-secondary" hx-on="click: handleCancelClick()" type="button">Zrusit
+            </button>
+        </div>
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong>Chyba!</strong>
+                <ul>
+                    {% for field_errors in form.errors.values %}
+                        {% for error in field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </form>
+</div>

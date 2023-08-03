@@ -1,0 +1,82 @@
+<div class="container">
+    <div class="d-flex justify-content-between m-0">
+        <h5 class="mt-3 fw-bold">Plech {{ sheet }}</h5>
+    </div>
+    <hr>
+    {#    <h6 class="text-center fw-bold mt-4">Zoznam plechov</h6>#}
+    <div class="card-body" style="max-height: 280px">
+        <div class="row">
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Material</label>
+                    <h6 class="fw-bold">{{ sheet.material }}</h6>
+                </div>
+            </div>
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Povrch</label>
+                    <h6 class="fw-bold">{{ sheet.surface }}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Hrubka</label>
+                    <h6 class="fw-bold">{{ sheet.thickness }}</h6>
+                </div>
+            </div>
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Hmotnost</label>
+                    <h6 class="fw-bold">{{ sheet.weight }}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Rozmer X</label>
+                    <h6 class="fw-bold">{{ sheet.size_x }}</h6>
+                </div>
+            </div>
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Rozmer Y</label>
+                    <h6 class="fw-bold">{{ sheet.size_y }}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="my-2">
+                    <label class="" for="">Poznamka</label>
+                    <h6 class="fw-bold">{{ sheet.note }}</h6>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br>
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-sm btn-info me-1" type="button"
+                    hx-get="{% url 'sheet_edit' sheet.pk %}"
+                    hx-trigger="click"
+                    hx-target="#editFrame"
+                    hx-swap="this"
+            ><i class="fa-sharp fa-solid fa-pen-to-square"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" type="button"
+                    hx-post="{% url 'sheet_delete' sheet.pk %}"
+                    hx-trigger="click"
+                    hx-confirm="Naozaj chces zmazat plech {{ sheet }}"
+                    hx-on="htmx:afterRequest: removeParentElement()"
+                    hx-target="#formFrame"
+            ><i class="fa-sharp fa-solid fa-trash"></i>
+            </button>
+            <button class="btn btn-sm btn-secondary" type="button"
+                    hx-trigger="click"
+                    hx-on="click: handleClearEditFrame()"
+            ><i class="fa-sharp fa-solid fa-close"></i>
+            </button>
+        </div>
+    </div>
+</div>

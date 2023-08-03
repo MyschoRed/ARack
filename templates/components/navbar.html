@@ -21,17 +21,27 @@
                 <li class="nav-item">
                     <button class="btn btn-sm btn-outline-primary"
                             type="button"
+                            hx-get="{% url 'stock_status' %}"
+                            hx-target="#dataFrame"
+                            hx-swap="this"
+                            hx-on="click: handleClearEditFrame()"
+                    >Stav skladu celych tabul
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-sm btn-outline-primary"
+                            type="button"
                             hx-get="{% url 'sheet_list' %}"
                             hx-target="#dataFrame"
                             hx-swap="this"
                             hx-on="click: handleClearEditFrame()"
-                    >Zoznam tabul
+                    >Tabule
                     </button>
                 </li>
                 {% if user.is_superuser %}
-                <li class="nav-item">
-                    <a class="btn btn-sm btn-outline-danger" href="/admin/">Admin</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-outline-danger" href="/admin/">Admin</a>
+                    </li>
                 {% endif %}
             </ul>
             <div class="d-flex">

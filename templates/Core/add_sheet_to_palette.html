@@ -16,6 +16,12 @@
         <div class="my-2">
             <label class="me-5 text-black" for="">Plech</label>
             {{ form.sheet }}
+                   <button class="btn btn-success btn-sm" type="button"
+                hx-get="{% url 'sheet_add' %}"
+                hx-target="#editFrame"
+                hx-swap="this"
+        >Vytvorit plech
+        </button>
         </div>
         <div class="my-2">
             <label class="me-5 text-black" for="">Pocet</label>
