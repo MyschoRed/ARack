@@ -161,7 +161,7 @@ def add_sheet_to_palette(request, pk):
             return redirect('palette_detail', pk=palette.pk)
     else:
         form = SheetToPaletteForm()
-    return render(request, 'Core/add_sheet_to_palette.html', {'form': form, 'palette_id': pk})
+    return render(request, 'components/add_sheet_to_palette_modal.html', {'form': form, 'palette_id': pk})
 
 
 @login_required
@@ -171,7 +171,8 @@ def palette_edit(request, pk):
     ctx = {'sheet': sheet,
            'form': form}
     if request.method == 'GET':
-        return render(request, 'Core/palette_edit.html', ctx)
+        # return render(request, 'Core/palette_edit.html', ctx)
+        return render(request, 'components/palette_edit_modal.html', ctx)
     if request.method == 'PUT':
         data = QueryDict(request.body).dict()
         form = SheetToPaletteForm(data, instance=sheet)

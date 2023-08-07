@@ -28,6 +28,8 @@
 {% endif %}
 </div>
 
+{#{% include 'components/test_modal.html' %}#}
+
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
@@ -36,6 +38,26 @@
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.esm.min.js' %}"></script>
 <script src="{% static 'js/htmx.min.js' %}"></script>
+
+
+<script>
+    function closeModal() {
+	var container = document.getElementById("modalsFrame")
+	var backdrop = document.getElementById("modal-backdrop")
+	var modal = document.getElementById("modal")
+
+	modal.classList.remove("show")
+	backdrop.classList.remove("show")
+
+	setTimeout(function() {
+		container.removeChild(backdrop)
+		container.removeChild(modal)
+	}, 200)
+}
+</script>
+
+
+
 <script>
     document.body.addEventListener('htmx:configRequest', function (evt) {
         evt.detail.parameters['auth_token'] = getAuthToken(); // add a new parameter into the mix

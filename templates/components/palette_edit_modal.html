@@ -1,0 +1,57 @@
+<div id="modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
+<div id="modal" class="modal fade show " tabindex="-1" style="display:block;">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content rounded-4">
+            <div class="mt-3">
+                <form role="form" method="PUT"
+                      hx-put="{% url 'palette_edit' sheet.pk %}"
+                      hx-swap="this"
+                      hx-target="#formFrame"
+                      hx-on="htmx:afterRequest: this.remove()"
+                      class="container">
+                    <div class="">
+                        <h6 class="fw-bold">Upravit plech</h6>
+                        <hr>
+                    </div>
+                    <div class="my-2">
+                        <label class="me-5 text-black" for="">Paleta</label>
+                        {{ form.palette }}
+                    </div>
+                    <div class="my-2">
+                        <label class="me-5 text-black" for="">Plech</label>
+                        {{ form.sheet }}
+                    </div>
+                    <div class="my-2">
+                        <label class="me-5 text-black" for="">Pocet</label>
+                        {{ form.quantity }}
+                    </div>
+                    <div class="my-2">
+                        <label class="me-3 text-black" for="">Poznamka</label>
+                        {{ form.note }}
+                    </div>
+
+                    <div class="text-center mb-2">
+                        <button class="btn btn-sm btn-info" onclick="closeModal()" type="submit">Ulozit</button>
+                        <button class="btn btn-sm btn-secondary" type="button"
+                                hx-on="click: handleCancelClick()"
+                                onclick="closeModal()"
+                        >Zrusit
+                        </button>
+                    </div>
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Chyba!</strong>
+                            <ul>
+                                {% for field_errors in form.errors.values %}
+                                    {% for error in field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
