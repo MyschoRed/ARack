@@ -1,0 +1,52 @@
+<div class="container-fluid mt-3">
+
+    <div class="d-flex justify-content-between">
+        <h6 class="fw-bold">Vydajky</h6>
+        <button class="btn btn-success btn-sm" type="button"
+{#                hx-get="{% url 'material_issue_add' %}"#}
+                hx-target="#modalsFrame"
+                hx-swap="this"
+        >Vytvorit vydajku
+        </button>
+    </div>
+
+    <div class="card-body">
+        <table id="materialIssueListTable" class="table table-sm table-hover">
+            <thead class="sticky-top">
+            <tr>
+                <th scope="col">Zakazka</th>
+                <th scope="col">Tabule</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for issue in all_issues %}
+                <tr
+{#                        hx-get="{% url 'material_issue_detail' issue.pk %}"#}
+                    hx-trigger="click"
+                    hx-target="#formFrame"
+                    hx-swap="this"
+                    style="cursor: pointer">
+                    <td>{{ issue.order_number }}</td>
+<td>
+                        {% for key in issue.sheets.all %}
+
+                        {{ key }}
+
+                            {% endfor %}
+</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        new DataTable('#materialIssueListTable', {
+            info: true,
+            ordering: true,
+            paging: true,
+            stateSave: true,
+        });
+    </script>
+</div>

@@ -38,6 +38,16 @@
                     >Tabule
                     </button>
                 </li>
+                <li class="nav-item">
+                    <button class="btn btn-sm btn-outline-primary"
+                            type="button"
+                            hx-get="{% url 'material_issue_list' %}"
+                            hx-target="#dataFrame"
+                            hx-swap="this"
+                            hx-on="click: handleClearEditFrame()"
+                    >Vydajky
+                    </button>
+                </li>
                 {% if user.is_superuser %}
                     <li class="nav-item">
                         <a class="btn btn-sm btn-outline-danger" href="/admin/">Admin</a>

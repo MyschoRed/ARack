@@ -16,8 +16,8 @@
     <hr>
     {#    <h6 class="text-center fw-bold mt-4">Zoznam plechov</h6>#}
     <div class="card card-scroll border-0 m-0 p-0" style="max-height: 70vh">
-        <table class="table table-sm">
-            <thead>
+        <table class="table table-sm table-striped">
+            <thead class="sticky-top">
             <tr>
                 <th>Plech</th>
                 <th>Ks</th>
@@ -28,8 +28,8 @@
             <tbody id="sheetTable">
             {% for s in sheets %}
                 <tr id="trData">
-                    <td>{{ s.sheet.material }}, {{ s.sheet.surface }}, {{ s.sheet.tickness }}x{{ s.sheet.size_x }}x{{ s.sheet.size_y }}</td>
-                    <td>{{ s.quantity }} ks</td>
+                    <td>{{ s.sheet.material }}, {{ s.sheet.surface }}, {{ s.sheet.thickness }}x{{ s.sheet.size_x }}x{{ s.sheet.size_y }}</td>
+                    <td>{{ s.quantity }}</td>
                     <td>
                         {% if s.note %}
                             {{ s.note }}

@@ -20,13 +20,14 @@
     {% block login %}
     {% endblock login %}
 </div>
+
 {% if user.is_authenticated %}
-    <div class="">
+
         {% block content %}
         {% endblock content %}
-    </div>
+
 {% endif %}
-</div>
+
 
 {#{% include 'components/test_modal.html' %}#}
 
@@ -42,20 +43,26 @@
 
 <script>
     function closeModal() {
-	var container = document.getElementById("modalsFrame")
-	var backdrop = document.getElementById("modal-backdrop")
-	var modal = document.getElementById("modal")
+        var container = document.getElementById("modalsFrame")
+        var backdrop = document.getElementById("modal-backdrop")
+        var modal = document.getElementById("modal")
 
-	modal.classList.remove("show")
-	backdrop.classList.remove("show")
+        modal.classList.remove("show")
+        backdrop.classList.remove("show")
 
-	setTimeout(function() {
-		container.removeChild(backdrop)
-		container.removeChild(modal)
-	}, 200)
+        setTimeout(function () {
+            container.removeChild(backdrop)
+            container.removeChild(modal)
+        }, 200)
+    }
+
+    function redirectTo(url) {
+    window.location.href = url;
 }
-</script>
 
+// Použitie funkcie na presmerovanie
+
+</script>
 
 
 <script>

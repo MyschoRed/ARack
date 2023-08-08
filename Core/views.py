@@ -1,10 +1,11 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import QueryDict
 from django.shortcuts import render, redirect
 
 from Core.forms import SheetToPaletteForm, SignUpForm, SheetEditForm
-from Core.models import Palette, PaletteSheet, Sheet
+from Core.models import Palette, PaletteSheet, Sheet, MaterialIssue
 
 
 def palette_generator():
@@ -115,9 +116,11 @@ def sheet_delete(request, pk):
 def palette_list(request):
     paletts = Palette.objects.all().order_by('-name')
     palette_color = ''
-    ctx = []
+    total_weight = 0
+    pallets = []
     for palette in paletts:
         palette.update_load_weight()
+        total_weight += palette.load_weight
         if palette.load_weight == 0 or palette.load_weight is None:
             palette_color = 'blue'
         elif 0 < palette.load_weight <= 1500:
@@ -126,11 +129,12 @@ def palette_list(request):
             palette_color = 'darkorange'
         elif palette.load_weight > palette.capacity:
             palette_color = 'red'
-        ctx.append({
+        pallets.append({
             'palette': palette,
             'palette_color': palette_color,
         })
-    return render(request, 'Core/palette_list.html', {'pallets': ctx})
+
+    return render(request, 'Core/palette_list.html', {'pallets': pallets, 'total_weight': total_weight})
 
 
 @login_required
@@ -138,12 +142,10 @@ def palette_detail(request, pk):
     palette = Palette.objects.get(pk=pk)
     palette_sheets = palette.palettesheet_set.all()  # Získanie spojovacej tabuľky pre priradené plechy
     sheets = [sheet for sheet in palette_sheets]
-    load_weight = palette.update_load_weight()
 
     ctx = {
         'palette': palette,
         'sheets': sheets,
-        'load_weight': load_weight
     }
     return render(request, 'Core/palette_detail.html', ctx)
 
@@ -151,18 +153,30 @@ def palette_detail(request, pk):
 @login_required
 def add_sheet_to_palette(request, pk):
     if request.method == 'POST':
+        palette = Palette.objects.get(pk=pk)
+        palette_sheets = palette.palettesheet_set.all()  # Získanie spojovacej tabuľky pre priradené plechy
+        sheets = [sheet.sheet for sheet in palette_sheets]
+
         form = SheetToPaletteForm(request.POST or None)
+
         if form.is_valid():
-            palette = Palette.objects.get(pk=pk)
-            sheet = form.save(commit=False)
-            sheet.palette = palette
-            sheet.created_by = request.user
-            sheet.save()
-            return redirect('palette_detail', pk=palette.pk)
+            sheet_is_loaded = form.cleaned_data['sheet']
+            if sheet_is_loaded in sheets:
+                messages.error(request, "Tento plech uz je na palete.")
+                return redirect('errors')
+            else:
+                palette = Palette.objects.get(pk=pk)
+                sheet = form.save(commit=False)
+                sheet.palette = palette
+                sheet.created_by = request.user
+                sheet.save()
+                return redirect('palette_detail', pk=palette.pk)
     else:
         form = SheetToPaletteForm()
     return render(request, 'components/add_sheet_to_palette_modal.html', {'form': form, 'palette_id': pk})
 
+def errors(request):
+    return render(request, 'components/errors.html')
 
 @login_required
 def palette_edit(request, pk):
@@ -208,17 +222,18 @@ def stock_status(request):
         sheet.palettes = ', '.join(palettes) if palettes else 'N/A'
         sheet.quantities = ', '.join(map(str, quantities)) if quantities else 'N/A'
 
-    # sheets = Sheet.objects.annotate(
-    #     palette_name=Subquery(
-    #         PaletteSheet.objects.filter(sheet=OuterRef('pk')).values('palette__name')[:1]
-    #     ),
-    #     quantity_on_palette=Subquery(
-    #         PaletteSheet.objects.filter(sheet=OuterRef('pk')).values('quantity')[:1]
-    #     )
-    # ).values(
-    #     'material', 'surface', 'tickness', 'size_x', 'size_y', 'weight', 'palette_name', 'quantity_on_palette'
-    # )
     ctx = {
         'sheets': sheets,
     }
     return render(request, 'Core/stock_status.html', ctx)
+
+
+@login_required
+def material_issue_list(request):
+    all_issues = MaterialIssue.objects.all()
+    sheets = PaletteSheet.objects.all()
+    ctx = {
+        'all_issues': all_issues,
+        'sheets': sheets
+    }
+    return render(request, 'Core/material_issue_list.html', ctx)

@@ -105,3 +105,18 @@ def palette_sheet_pre_save(sender, instance, **kwargs):
     if not instance.id:
         instance.created_date = timezone.now()
         instance.created_by = get_user_model().objects.get(username=instance.created_by.username)
+
+
+class MaterialIssue(models.Model):
+    """
+    Materialova vydajka
+    """
+    order_number = models.CharField(max_length=64)
+    sheets = models.ManyToManyField(to=PaletteSheet, related_name='material_issue_sheet')
+
+    def __str__(self):
+        return f"{self.order_number}"
+
+    class Meta:
+        verbose_name = "Materialova vydajka"
+        verbose_name_plural = "Materialove vydajky"

@@ -20,6 +20,8 @@ urlpatterns = [
     path('sheet-edit/<int:pk>/', views.sheet_edit, name='sheet_edit'),
     path('sheet-delete/<int:pk>/', views.sheet_delete, name='sheet_delete'),
 
+    path('material-issue-list/', views.material_issue_list, name='material_issue_list'),
+
     path('stock-status/', views.stock_status, name='stock_status'),
 
     path('stock/', views.stock, name='stock'),
@@ -27,4 +29,6 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='Core/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('registration/', views.registration, name='registration'),
+
+    path('error/', views.errors, name='errors')
 ]
