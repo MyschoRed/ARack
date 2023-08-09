@@ -1,22 +1,9 @@
-<div id="modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
-<div id="modal" class="modal fade show" tabindex="-1" style="display:block;">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded-4">
-            {% if messages %}
-                <div class="my-2">
-                        {% for message in messages %}
-                            <div class="fs-5 text-center">
-                            {{ message }}
-                            </div>
-                        {% endfor %}
-                </div>
-            {% endif %}
-
-            <div class="mb-2 text-center">
-                <button class="btn btn-sm btn-secondary" onclick="redirectTo('/a-rack/')" type="button">
-                    Zrusit
-                </button>
+{% if messages %}
+    <div class="my-2">
+        {% for message in messages %}
+            <div class="fs-5 text-center">
+                {{ message }}
             </div>
-        </div>
+        {% endfor %}
     </div>
-</div>
+{% endif %}

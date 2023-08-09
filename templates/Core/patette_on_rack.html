@@ -1,11 +1,8 @@
-<div class="rounded palette-item"
-     style="background-color: {{ p.palette_color }}; color: white; margin-bottom: 4px; padding: 2px"
-     hx-get="{% url 'palette_detail' p.palette.pk %}"
-     hx-trigger="click"
-     hx-target="#formFrame"
-     hx-on="click: handleCancelClick()">
+<a href="/palette/detail/{{ p.palette.id }}/" class="nav-link">
+<div class="rounded palette-item" style="background-color: {{ p.palette_color }}; color: white; margin-bottom: 4px; padding: 2px">
     <div class="d-flex justify-content-between">
         <span class="ms-5">{{ p.palette.name }}</span>
         <span class="me-5">{{ p.palette.load_weight|floatformat:2 }} kg</span>
     </div>
 </div>
+</a>

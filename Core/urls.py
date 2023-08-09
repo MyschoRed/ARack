@@ -8,7 +8,7 @@ urlpatterns = [
 
     path('a-rack/', views.a_rack, name='a_rack'),
 
-    path('palettes-list/', views.palette_list, name='paletts_list'),
+    # path('palettes-list/', views.palette_list, name='paletts_list'),
     path('palette/detail/<int:pk>/', views.palette_detail, name='palette_detail'),
     path('palette/edit/<int:pk>/', views.palette_edit, name='palette_edit'),
     path('palette/sheet/add/<int:pk>/', views.add_sheet_to_palette, name='add_sheet_to_palette'),
@@ -30,5 +30,4 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('registration/', views.registration, name='registration'),
 
-    path('error/', views.errors, name='errors')
 ]

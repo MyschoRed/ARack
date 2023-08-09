@@ -1,10 +1,9 @@
-<div class="">
-    <form role="form" method="PUT"
-          hx-put="{% url 'palette_edit' sheet.pk %}"
-          hx-swap="this"
-          hx-target="#formFrame"
-          hx-on="htmx:afterRequest: this.remove()"
-          class="container">
+{% extends 'Core/base.html' %}
+
+{% block content %}
+<div class="container">
+    <form role="form" method="POST">
+    {% csrf_token %}
         <div class="">
             <h6 class="fw-bold">Upravit plech</h6>
             <hr>
@@ -27,11 +26,14 @@
         </div>
 
         <div class="text-center mb-2">
-            <button class="btn btn-sm btn-info" type="submit">Ulozit</button>
-            <button class="btn btn-sm btn-secondary" type="button"
-            hx-on="click: handleCancelClick()"
-            >Zrusit</button>
+            <button class="btn  btn-success" type="submit">
+                <i class="fa-sharp fa-solid fa-floppy-disk"></i>
+            </button>
+            <button class="btn  btn-secondary" id="backButton" type="button">
+                <i class="fa-sharp fa-solid fa-arrow-left"></i>
+            </button>
         </div>
+
         {% if form.errors %}
             <div class="alert alert-danger">
                 <strong>Chyba!</strong>
@@ -46,3 +48,4 @@
         {% endif %}
     </form>
 </div>
+{% endblock %}

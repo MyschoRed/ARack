@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import QueryDict
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
 
 from Core.forms import SheetToPaletteForm, SignUpForm, SheetEditForm
 from Core.models import Palette, PaletteSheet, Sheet, MaterialIssue
@@ -52,7 +53,27 @@ def stock(request):
 @login_required
 def a_rack(request):
     # palette_generator()
-    return render(request, 'Core/a_rack.html')
+
+    paletts = Palette.objects.all().order_by('-name')
+    palette_color = ''
+    total_weight = 0
+    pallets = []
+    for palette in paletts:
+        palette.update_load_weight()
+        total_weight += palette.load_weight
+        if palette.load_weight == 0 or palette.load_weight is None:
+            palette_color = 'blue'
+        elif 0 < palette.load_weight <= 1500:
+            palette_color = 'green'
+        elif 1500 < palette.load_weight <= palette.capacity:
+            palette_color = 'darkorange'
+        elif palette.load_weight > palette.capacity:
+            palette_color = 'red'
+        pallets.append({
+            'palette': palette,
+            'palette_color': palette_color,
+        })
+    return render(request, 'Core/a_rack.html', {'pallets': pallets, 'total_weight': total_weight})
 
 
 def sheet_list(request):
@@ -112,29 +133,29 @@ def sheet_delete(request, pk):
     return render(request, 'Core/sheet_detail.html', {'sheets': sheets})
 
 
-@login_required
-def palette_list(request):
-    paletts = Palette.objects.all().order_by('-name')
-    palette_color = ''
-    total_weight = 0
-    pallets = []
-    for palette in paletts:
-        palette.update_load_weight()
-        total_weight += palette.load_weight
-        if palette.load_weight == 0 or palette.load_weight is None:
-            palette_color = 'blue'
-        elif 0 < palette.load_weight <= 1500:
-            palette_color = 'green'
-        elif 1500 < palette.load_weight <= palette.capacity:
-            palette_color = 'darkorange'
-        elif palette.load_weight > palette.capacity:
-            palette_color = 'red'
-        pallets.append({
-            'palette': palette,
-            'palette_color': palette_color,
-        })
-
-    return render(request, 'Core/palette_list.html', {'pallets': pallets, 'total_weight': total_weight})
+# @login_required
+# def palette_list(request):
+#     paletts = Palette.objects.all().order_by('-name')
+#     palette_color = ''
+#     total_weight = 0
+#     pallets = []
+#     for palette in paletts:
+#         palette.update_load_weight()
+#         total_weight += palette.load_weight
+#         if palette.load_weight == 0 or palette.load_weight is None:
+#             palette_color = 'blue'
+#         elif 0 < palette.load_weight <= 1500:
+#             palette_color = 'green'
+#         elif 1500 < palette.load_weight <= palette.capacity:
+#             palette_color = 'darkorange'
+#         elif palette.load_weight > palette.capacity:
+#             palette_color = 'red'
+#         pallets.append({
+#             'palette': palette,
+#             'palette_color': palette_color,
+#         })
+#
+#     return render(request, 'Core/palette_list.html', {'pallets': pallets, 'total_weight': total_weight})
 
 
 @login_required
@@ -162,8 +183,8 @@ def add_sheet_to_palette(request, pk):
         if form.is_valid():
             sheet_is_loaded = form.cleaned_data['sheet']
             if sheet_is_loaded in sheets:
-                messages.error(request, "Tento plech uz je na palete.")
-                return redirect('errors')
+                messages.error(request, f"Tabula {sheet_is_loaded} uz je na palete.")
+                # return redirect('errors')
             else:
                 palette = Palette.objects.get(pk=pk)
                 sheet = form.save(commit=False)
@@ -173,10 +194,8 @@ def add_sheet_to_palette(request, pk):
                 return redirect('palette_detail', pk=palette.pk)
     else:
         form = SheetToPaletteForm()
-    return render(request, 'components/add_sheet_to_palette_modal.html', {'form': form, 'palette_id': pk})
+    return render(request, 'Core/add_sheet_to_palette.html', {'form': form, 'palette_id': pk})
 
-def errors(request):
-    return render(request, 'components/errors.html')
 
 @login_required
 def palette_edit(request, pk):
@@ -185,16 +204,17 @@ def palette_edit(request, pk):
     ctx = {'sheet': sheet,
            'form': form}
     if request.method == 'GET':
-        # return render(request, 'Core/palette_edit.html', ctx)
-        return render(request, 'components/palette_edit_modal.html', ctx)
-    if request.method == 'PUT':
+        return render(request, 'Core/palette_edit.html', ctx)
+
+    if request.method == 'POST':
         data = QueryDict(request.body).dict()
         form = SheetToPaletteForm(data, instance=sheet)
-
+        palette = sheet.palette.pk
         if form.is_valid():
             form.instance.created_by = request.user
             form.save()
-            return render(request, 'Core/palette_detail.html', ctx)
+            return redirect(reverse('palette_detail', args=[palette]))
+            # return render(request, 'Core/a_rack.html', ctx)
 
 
 @login_required
