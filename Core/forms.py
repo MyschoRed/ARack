@@ -2,8 +2,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from Core.models import Palette, PaletteSheet, Sheet
-
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False)
@@ -18,21 +16,3 @@ class SignUpForm(UserCreationForm):
             'password1',
             'password2',
         ]
-
-
-class PaletteForm(forms.ModelForm):
-    class Meta:
-        model = Palette
-        fields = '__all__'
-
-
-class SheetToPaletteForm(forms.ModelForm):
-    class Meta:
-        model = PaletteSheet
-        fields = '__all__'
-
-
-class SheetEditForm(forms.ModelForm):
-    class Meta:
-        model = Sheet
-        fields = '__all__'

@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from Core.models import RawMaterial, MaterialSurface, Palette, Sheet, PaletteSheet, MaterialIssue
+from IssueNote.models import MaterialIssue
+from Material.models import RawMaterial, MaterialSurface, Sheet
+from Rack.models import Palette, PaletteSheet
 
 # Register your models here.
 admin.site.register(RawMaterial)

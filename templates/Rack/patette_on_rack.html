@@ -1,4 +1,4 @@
-<a href="/palette/detail/{{ p.palette.id }}/" class="nav-link">
+<a href="{% url 'palette_detail' p.palette.id %}" class="nav-link">
 <div class="rounded palette-item" style="background-color: {{ p.palette_color }}; color: white; margin-bottom: 4px; padding: 2px">
     <div class="d-flex justify-content-between">
         <span class="ms-5">{{ p.palette.name }}</span>
