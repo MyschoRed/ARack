@@ -29,7 +29,7 @@
         <div class="col-6">
             {% for p in pallets %}
                 {% if 'A' in p.palette.name %}
-                    {% include 'Core/patette_on_rack.html' %}
+                    {% include 'Core/../Rack/patette_on_rack.html' %}
                 {% endif %}
             {% endfor %}
 
@@ -37,7 +37,7 @@
         <div class="col-6">
             {% for p in pallets %}
                 {% if 'B' in p.palette.name %}
-                    {% include 'Core/patette_on_rack.html' %}
+                    {% include 'Core/../Rack/patette_on_rack.html' %}
                 {% endif %}
             {% endfor %}
         </div>

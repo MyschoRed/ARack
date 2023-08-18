@@ -1,10 +1,10 @@
-{% extends 'Core/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
     <div class="container-fluid mt-2">
         <div class="row mx-1 gap-4">
             <div class="col mb-4">
-                {% include 'Core/explanatory_notes.html' %}
+                {% include 'Core/../partials/explanatory_notes.html' %}
             </div>
             <div class="col mt-3">
                 <p class="text-center"> Celkova hmotnost skladu: &nbsp &nbsp &nbsp<strong
@@ -16,7 +16,7 @@
             <div class="col-6">
                 {% for p in pallets %}
                     {% if 'A' in p.palette.name %}
-                        {% include 'Core/patette_on_rack.html' %}
+                        {% include 'Rack/patette_on_rack.html' %}
                     {% endif %}
                 {% endfor %}
 
@@ -24,7 +24,7 @@
             <div class="col-6">
                 {% for p in pallets %}
                     {% if 'B' in p.palette.name %}
-                        {% include 'Core/patette_on_rack.html' %}
+                        {% include 'Rack/patette_on_rack.html' %}
                     {% endif %}
                 {% endfor %}
             </div>
