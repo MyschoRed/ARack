@@ -52,7 +52,7 @@ def stock(request):
 
 @login_required
 def a_rack(request):
-    # palette_generator()
+    # palette_generator() zapnut iba pri inicializacii databazy!!!
 
     paletts = Palette.objects.all().order_by('-name')
     palette_color = ''
